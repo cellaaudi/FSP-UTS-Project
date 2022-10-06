@@ -1,11 +1,11 @@
 <?php
-require('parent.php');
+require_once('parent.php');
 
 class Matkul extends Koneksi
 {
-    public function __construct($server, $user, $pass, $db)
+    public function __construct()
     {
-        parent::__construct($server, $user, $pass, $db);
+        parent::__construct();
     }
 
     public function getMatkul()

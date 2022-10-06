@@ -1,3 +1,11 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+table {
+    width: 100%;
+}
+
 table,
 tr,
 td {
@@ -7,4 +15,20 @@ td {
 thead {
     text-align: center;
     font-weight: bold;
+}
+
+.td-peserta {
+    width: 30%;
+}
+
+.td-nilai {
+    width: 10%;
+}
+
+.td-matkul {
+    width: 14%;
+}
+
+.td-empty {
+    text-align: center;
 }
