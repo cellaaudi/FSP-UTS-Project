@@ -51,7 +51,7 @@
         </tbody>
     </table>
     <br><br>
-    <form action="" method="post">
+    <form action="ubahpeserta.php" method="post">
         <input type="submit" value="Ubah Peserta">
     </form>
 

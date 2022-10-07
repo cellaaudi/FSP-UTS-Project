@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <form action="" method="POST">
+    <form action="index.php" method="POST">
         <table>
             <thead>
                 <tr>
@@ -35,11 +35,11 @@
                 $resmhs = $mahasiswa->getMahasiswa();
 
                 foreach ($resmhs as $arr) {
-                    echo "<tr>";
+                    echo "<tr id='" . $arr['nrp'] . "'>";
                     echo "<td class='td-peserta'>" . $arr['nrp'] . " - " . $arr['nama'] . "</td>";
 
                     foreach ($resmatkul as $arr2) {
-                        echo "<td><input id='" . $arr['nrp'] . "-" . $arr2['kode'] ."' type='number'></td>";
+                        echo "<td><input id='" . $arr2['kode'] . "-" . $arr['nrp'] ."' name='nilai[]' type='number'></td>";
                     }
 
                     echo "</tr>";
@@ -49,8 +49,18 @@
             </tbody>
         </table>
         <br><br>
-        <input id="btnSimpan" type="button" value="Simpan">
+        <input id="btnSimpan" name="simpan" type="submit" value="Simpan">
     </form>
+
+    <?php
+    if (isset($_POST['simpan'])) {
+        require('class/peserta.php');
+        $peserta = new Peserta();
+
+        // $peserta->insertPeserta($_POST['nilai'])
+    }
+
+    ?>
 </body>
 
 </html>
