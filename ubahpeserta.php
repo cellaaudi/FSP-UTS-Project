@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <form action="index.php" method="POST">
+    <form action="" method="POST">
         <table>
             <thead>
                 <tr>
@@ -33,13 +33,16 @@
                 require('class/mahasiswa.php');
                 $mahasiswa = new Mahasiswa();
                 $resmhs = $mahasiswa->getMahasiswa();
+                // $i = 1;
 
                 foreach ($resmhs as $arr) {
                     echo "<tr id='" . $arr['nrp'] . "'>";
                     echo "<td class='td-peserta'>" . $arr['nrp'] . " - " . $arr['nama'] . "</td>";
 
                     foreach ($resmatkul as $arr2) {
-                        echo "<td><input id='" . $arr2['kode'] . "-" . $arr['nrp'] ."' name='nilai[]' type='number'></td>";
+                        echo "<td><input id='" . $arr2['kode'] . "-" . $arr['nrp'] . "' type='number' name='nilai[]'></td>";
+
+                        // $i++;
                     }
 
                     echo "</tr>";
@@ -54,8 +57,45 @@
 
     <?php
     if (isset($_POST['simpan'])) {
-        require('class/peserta.php');
-        $peserta = new Peserta();
+        $data = array();
+
+        $totalCell = count($resmatkul) * count($resmhs);
+
+        var_dump($_POST['nilai']);
+        echo "<br><br>";
+
+        foreach ($resmhs as $arr) {
+            foreach ($resmatkul as $arr2) {
+                echo "<p>";
+                echo $arr2['kode'] . " - " . $arr['nrp'] . " ";
+
+                for ($i = 0; $i < $totalCell; $i++) {
+                    echo $_POST['nilai'][$i] . "<br>";
+                }
+
+                echo "</p>";
+            }
+        }
+
+        // for ($i = 0; $i < $totalCell; $i++) {
+        //     foreach ($resmhs as $arr) {
+        //         foreach ($resmatkul as $arr2) {
+        //             echo "<p>";
+        //             echo $arr2['kode'] . " - " . $arr['nrp'] . " ";
+        //             echo $_POST['nilai'][$i] . "<br>";
+        //             echo "</p>";
+        //         }
+        //     }
+        // }
+
+        // require('class/peserta.php');
+        // $peserta = new Peserta();
+
+        // foreach ($resmhs as $arr) {
+        //     foreach ($resmatkul as $arr2) {
+
+        //     }
+        // }
 
         // $peserta->insertPeserta($_POST['nilai'])
     }
