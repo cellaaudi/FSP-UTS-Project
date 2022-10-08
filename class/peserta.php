@@ -28,6 +28,26 @@ class Peserta extends Koneksi
         return $peserta;
     }
 
+    public function getPesertaMatkul($kode) {
+        $peserta = [];
+
+        $sql = "SELECT p.nrp, mhs.nama, p.nilai FROM peserta p INNER JOIN mahasiswa mhs ON p.nrp=mhs.nrp WHERE kode=?";
+        $stmt = $this->con->prepare($sql);
+        $stmt->bind_param("s", $kode);
+        $stmt->execute();
+        $res = $stmt->get_result();
+
+        while ($row = $res->fetch_assoc()) {
+            $nrp = $row['nrp'];
+            $nama = $row['nama'];
+            $nilai = $row['nilai'];
+
+            $peserta[] = array("nrp" => $nrp, "nama" => $nama, "nilai" => $nilai);
+        }
+
+        return $peserta;
+    }
+
     public function updatePeserta($nilai, $kode, $nrp) 
     {
         $sql = "UPDATE peserta SET nilai=? WHERE kode=? AND nrp=?";

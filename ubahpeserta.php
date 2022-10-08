@@ -38,7 +38,7 @@
                 $peserta = new Peserta();
 
                 foreach ($resmhs as $arr) {
-                    echo "<tr id='" . $arr['nrp'] . "'>";
+                    echo "<tr>";
                     echo "<td class='td-peserta'>" . $arr['nrp'] . " - " . $arr['nama'] . "</td>";
 
                     $respeserta = $peserta->getPeserta($arr['nrp']);
@@ -46,7 +46,6 @@
                     foreach ($respeserta as $arr2) {
                         echo "<td>";
                         echo "<input type='number' name='nilai[]' value='" . $arr2['nilai'] . "' value=NULL>";
-                        // echo "<input type='number' name='nilai[]' value='" . $arr2['nilai'] . "' value='isset($_POST\['btnSimpan'\]) ? $_POST\['nilai'\] : NULL'>";
                         echo "<input type='hidden' name='pkkode[]' value='" . $arr2['kode'] . "'/>";
                         echo "<input type='hidden' name='pknrp[]' value='" . $arr['nrp'] . "'/>";
                         echo "</td>";
