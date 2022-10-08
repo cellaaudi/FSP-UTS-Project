@@ -8,28 +8,48 @@ class Peserta extends Koneksi
         parent::__construct();
     }
 
-    public function insertPeserta($id, $nilai, $postnilai)
-    {
-        $kodexnrp = explode("-", $id);
+    public function getPeserta($nrp) {
+        $peserta = [];
 
-        $sql = "INSERT INTO peserta VALUES(?, ?, ?)";
+        $sql = "SELECT * FROM peserta WHERE nrp=?";
         $stmt = $this->con->prepare($sql);
-        $stmt->bind_param('ssi', $kodexnrp[0], $kodexnrp[1], $nilai);
+        $stmt->bind_param("s", $nrp);
+        $stmt->execute();
+        $res = $stmt->get_result();
 
-        foreach ($postnilai as $key => $kodexnrp[1]) {
-            $nilai = $postnilai[$key];
+        while ($row = $res->fetch_assoc()) {
+            $kode = $row['kode'];
+            $nrp = $row['nrp'];
+            $nilai = $row['nilai'];
 
-            $stmt->execute();
+            $peserta[] = array("kode" => $kode, "nrp" => $nrp, "nilai" => $nilai);
         }
-        // $res = $this->con->query($sql);
 
-    //     while ($row = $res->fetch_assoc()) {
-    //         $nrp = $row['nrp'];
-    //         $nama = $row['nama'];
+        return $peserta;
+    }
 
-    //         $mahasiswa[] = array("nrp" => $nrp, "nama" => $nama);
-    //     }
+    public function updatePeserta($nilai, $kode, $nrp) 
+    {
+        $sql = "UPDATE peserta SET nilai=? WHERE kode=? AND nrp=?";
+        $stmt = $this->con->prepare($sql);
+        $stmt->bind_param("iss", $nilai, $kode, $nrp);
+        $stmt->execute();
 
-    //     return $mahasiswa;
+        // parameter panggil 1 1 jan array
+        // loop di form
+
+        // foreach ($arrnrp as $nrp) {
+        //     foreach ($arrkode as $kode) {
+        //         $stmt->bind_param('ssi', $kode, $nrp, $nilai);
+
+        //         foreach ($arrkode as $key => $kode) {
+        //             // foreach ($arrnrp as $key2 => $nrp) {
+        //                 $nilai = $arrnilai[$key];
+    
+        //                 $stmt->execute();
+        //             // }
+        //         }
+        //     }
+        // }
     }
 }

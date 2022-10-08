@@ -33,16 +33,23 @@
                 require('class/mahasiswa.php');
                 $mahasiswa = new Mahasiswa();
                 $resmhs = $mahasiswa->getMahasiswa();
-                // $i = 1;
+
+                require('class/peserta.php');
+                $peserta = new Peserta();
 
                 foreach ($resmhs as $arr) {
                     echo "<tr id='" . $arr['nrp'] . "'>";
                     echo "<td class='td-peserta'>" . $arr['nrp'] . " - " . $arr['nama'] . "</td>";
 
-                    foreach ($resmatkul as $arr2) {
-                        echo "<td><input id='" . $arr2['kode'] . "-" . $arr['nrp'] . "' type='number' name='nilai[]'></td>";
+                    $respeserta = $peserta->getPeserta($arr['nrp']);
 
-                        // $i++;
+                    foreach ($respeserta as $arr2) {
+                        echo "<td>";
+                        echo "<input type='number' name='nilai[]' value='" . $arr2['nilai'] . "' value=NULL>";
+                        // echo "<input type='number' name='nilai[]' value='" . $arr2['nilai'] . "' value='isset($_POST\['btnSimpan'\]) ? $_POST\['nilai'\] : NULL'>";
+                        echo "<input type='hidden' name='pkkode[]' value='" . $arr2['kode'] . "'/>";
+                        echo "<input type='hidden' name='pknrp[]' value='" . $arr['nrp'] . "'/>";
+                        echo "</td>";
                     }
 
                     echo "</tr>";
@@ -57,47 +64,21 @@
 
     <?php
     if (isset($_POST['simpan'])) {
-        $data = array();
+        // print_r($_POST['nilai']);
+        // echo "<br><br>";
+        // print_r($_POST['pkkode']);
+        // echo "<br><br>";
+        // print_r($_POST['pknrp']);
 
-        $totalCell = count($resmatkul) * count($resmhs);
-
-        var_dump($_POST['nilai']);
-        echo "<br><br>";
-
-        foreach ($resmhs as $arr) {
-            foreach ($resmatkul as $arr2) {
-                echo "<p>";
-                echo $arr2['kode'] . " - " . $arr['nrp'] . " ";
-
-                for ($i = 0; $i < $totalCell; $i++) {
-                    echo $_POST['nilai'][$i] . "<br>";
-                }
-
-                echo "</p>";
+        for ($i = 0; $i < count($_POST['nilai']); $i++) {
+            if (!empty($_POST['nilai'][$i])) {
+                $peserta->updatePeserta($_POST['nilai'][$i], $_POST['pkkode'][$i], $_POST['pknrp'][$i]);
+            } else {
+                $peserta->updatePeserta(NULL, $_POST['pkkode'][$i], $_POST['pknrp'][$i]);
             }
         }
 
-        // for ($i = 0; $i < $totalCell; $i++) {
-        //     foreach ($resmhs as $arr) {
-        //         foreach ($resmatkul as $arr2) {
-        //             echo "<p>";
-        //             echo $arr2['kode'] . " - " . $arr['nrp'] . " ";
-        //             echo $_POST['nilai'][$i] . "<br>";
-        //             echo "</p>";
-        //         }
-        //     }
-        // }
-
-        // require('class/peserta.php');
-        // $peserta = new Peserta();
-
-        // foreach ($resmhs as $arr) {
-        //     foreach ($resmatkul as $arr2) {
-
-        //     }
-        // }
-
-        // $peserta->insertPeserta($_POST['nilai'])
+        echo "<meta http-equiv='refresh' content='0'>";
     }
 
     ?>

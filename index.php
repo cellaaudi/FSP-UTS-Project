@@ -55,6 +55,10 @@
         <input type="submit" value="Ubah Peserta">
     </form>
 
+    <?php
+
+    ?>
+
     <script type="text/javascript" src="js/fsp.js"></script>
 </body>
 
