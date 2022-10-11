@@ -8,7 +8,28 @@ class Peserta extends Koneksi
         parent::__construct();
     }
 
-    public function getPeserta($nrp) {
+    public function getPeserta() {
+        $peserta = [];
+
+        $sql = "SELECT * FROM peserta";
+        $res = $this->con->query($sql);
+        // $stmt = $this->con->prepare($sql);
+        // $stmt->bind_param("ss", $kode, $nrp);
+        // $stmt->execute();
+        // $res = $stmt->get_result();
+
+        while ($row = $res->fetch_assoc()) {
+            $kode = $row['kode'];
+            $nrp = $row['nrp'];
+            $nilai = $row['nilai'];
+
+            $peserta[] = array("kode" => $kode, "nrp" => $nrp, "nilai" => $nilai);
+        }
+
+        return $peserta;
+    }
+
+    public function getPesertaByNRP($nrp) {
         $peserta = [];
 
         $sql = "SELECT * FROM peserta WHERE nrp=?";
@@ -28,7 +49,7 @@ class Peserta extends Koneksi
         return $peserta;
     }
 
-    public function getPesertaMatkul($kode) {
+    public function getPesertaByKode($kode) {
         $peserta = [];
 
         $sql = "SELECT p.nrp, mhs.nama, p.nilai FROM peserta p INNER JOIN mahasiswa mhs ON p.nrp=mhs.nrp WHERE kode=?";
@@ -46,6 +67,14 @@ class Peserta extends Koneksi
         }
 
         return $peserta;
+    }
+
+    public function insertPeserta($nilai, $kode, $nrp)
+    {
+        $sql = "INSERT INTO peserta(kode, nrp, nilai) VALUES (?, ?, ?)";
+        $stmt = $this->con->prepare($sql);
+        $stmt->bind_param("ssi", $kode, $nrp, $nilai);
+        $stmt->execute();
     }
 
     public function updatePeserta($nilai, $kode, $nrp) 
@@ -71,5 +100,13 @@ class Peserta extends Koneksi
         //         }
         //     }
         // }
+    }
+
+    public function deletePeserta($kode, $nrp)
+    {
+        $sql = "DELETE FROM peserta WHERE kode=? AND nrp=?";
+        $stmt = $this->con->prepare($sql);
+        $stmt->bind_param("ss", $kode, $nrp);
+        $stmt->execute();
     }
 }

@@ -48,30 +48,27 @@
             <?php
             if (isset($_POST['btnPilih'])) {
                 $idMatkul = $_POST['selMatkul'];
-                // print_r($_POST['selMatkul']);
 
                 require('class/peserta.php');
                 $peserta = new Peserta();
-                $respeserta = $peserta->getPesertaMatkul($idMatkul);
-                print_r($respeserta);
+                $respeserta = $peserta->getPesertaByKode($idMatkul);
+                // print_r($respeserta);
 
                 require('class/mahasiswa.php');
                 $mahasiswa = new Mahasiswa();
                 $resmhs = $mahasiswa->getMahasiswa();
 
-                // for ($j = 0; $j < count($respeserta); $j++) {
-                if (!is_null($respeserta)) {
-
-                    // cek mahasiswa dari table peserta yang nilenya gak null, baru bakal di echo
-                    // maybe foreach duluan baru if else, di else di break
-                    // foreach harusnya cuma di mhs yang nilai nya gak null di kode matkul ini
-                    foreach ($resmhs as $arr) {
+                if (!empty($respeserta)) {
+                    foreach ($respeserta as $arr) {
                         echo "<tr>";
                         echo "<td class='td-peserta'>" . $arr['nrp'] . " - " . $arr['nama'] . "</td>";
 
+                        // ambil dulu arr[nilai]
+                        // cek range masuk nisbi apa
+                        // baru echo di td itu
                         for ($i = 0; $i < 7; $i++) {
                             echo "<td>";
-                            echo "tes";
+                            echo $arr['nilai'];
                             echo "</td>";
                         }
 
@@ -80,7 +77,6 @@
                 } else {
                     echo "<tr><td class='td-empty' colspan='8'><i>Tidak Ada Peserta untuk Mata Kuliah ini</i></td></tr>";
                 }
-                // }
             } else {
                 echo "<tr><td class='td-empty' colspan='8'><i>Mata Kuliah belum ditentukan</i></td></tr>";
             }

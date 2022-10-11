@@ -36,19 +36,42 @@
 
                 require('class/peserta.php');
                 $peserta = new Peserta();
+                $respesertamatkul = $peserta->getPeserta();
+
+                $total = count($resmhs) * count($resmatkul);
 
                 foreach ($resmhs as $arr) {
                     echo "<tr>";
                     echo "<td class='td-peserta'>" . $arr['nrp'] . " - " . $arr['nama'] . "</td>";
 
-                    $respeserta = $peserta->getPeserta($arr['nrp']);
+                    $respeserta = $peserta->getPesertaByNRP($arr['nrp']);
 
-                    foreach ($respeserta as $arr2) {
-                        echo "<td>";
-                        echo "<input type='number' name='nilai[]' value='" . $arr2['nilai'] . "' value=NULL>";
-                        echo "<input type='hidden' name='pkkode[]' value='" . $arr2['kode'] . "'/>";
-                        echo "<input type='hidden' name='pknrp[]' value='" . $arr['nrp'] . "'/>";
-                        echo "</td>";
+                    if (empty($respeserta)) {
+                        foreach ($resmatkul as $arr2) {
+                            echo "<td>";
+                            echo "<input id='" . $arr2['kode'] . "-" . $arr['nrp'] . "' type='number' name='nilai[]' value=NULL>";
+                            echo "<input id='" . $arr2['kode'] . "-" . $arr['nrp'] . "' type='hidden' name='pkkode[]' value='" . $arr2['kode'] . "'/>";
+                            echo "<input id='" . $arr2['kode'] . "-" . $arr['nrp'] . "' type='hidden' name='pknrp[]' value='" . $arr['nrp'] . "'/>";
+                            echo "</td>";
+                        }
+                    } else {
+                        foreach ($resmatkul as $arr2) {
+                            echo "<td>";
+                            echo "<input id='" . $arr2['kode'] . "-" . $arr['nrp'] . "' type='number' name='nilai[]' value='";
+
+                            foreach($respeserta as $arr3) {
+                                if ($arr2['kode'] == $arr3['kode'] && $arr['nrp'] == $arr3['nrp']) {
+                                    echo $arr3['nilai'];
+                                } else {
+                                    echo NULL;
+                                }
+                            }
+
+                            echo "'>";
+                            echo "<input type='hidden' name='pkkode[]' value='" . $arr2['kode'] . "'/>";
+                            echo "<input type='hidden' name='pknrp[]' value='" . $arr['nrp'] . "'/>";
+                            echo "</td>";
+                        }
                     }
 
                     echo "</tr>";
@@ -63,17 +86,17 @@
 
     <?php
     if (isset($_POST['simpan'])) {
-        // print_r($_POST['nilai']);
-        // echo "<br><br>";
-        // print_r($_POST['pkkode']);
-        // echo "<br><br>";
-        // print_r($_POST['pknrp']);
-
         for ($i = 0; $i < count($_POST['nilai']); $i++) {
             if (!empty($_POST['nilai'][$i])) {
-                $peserta->updatePeserta($_POST['nilai'][$i], $_POST['pkkode'][$i], $_POST['pknrp'][$i]);
+                foreach ($respesertamatkul as $arr) {
+                    if ($arr['kode'] == $_POST['pkkode'][$i] and $arr['nrp'] == $_POST['pknrp'][$i]) {
+                        $peserta->updatePeserta($_POST['nilai'][$i], $_POST['pkkode'][$i], $_POST['pknrp'][$i]);
+                    } else {
+                        $peserta->insertPeserta($_POST['nilai'][$i], $_POST['pkkode'][$i], $_POST['pknrp'][$i]);
+                    }
+                }
             } else {
-                $peserta->updatePeserta(NULL, $_POST['pkkode'][$i], $_POST['pknrp'][$i]);
+                $peserta->deletePeserta($_POST['pkkode'][$i], $_POST['pknrp'][$i]);
             }
         }
 
