@@ -35,7 +35,7 @@
 
                     ?>
                 </select>
-                <input id="btnPilih" type="submit" name="btnPilih" value="Pilih">
+                <input id="btnPilih" type="submit" name="btnPilih" value="Pilih" class="btn hover focus">
             </div>
         </form>
         <br>
@@ -146,7 +146,7 @@
         </div>
         <br><br>
         <form action="ubahpeserta.php" method="post">
-            <input type="submit" value="Ubah Peserta">
+            <input type="submit" value="Ubah Peserta" class="btn hover focus">
         </form>
     </div>
 </body>

@@ -79,7 +79,7 @@
                 </tbody>
             </table>
             <br><br>
-            <input id="btnSimpan" name="simpan" type="submit" value="Simpan">
+            <input id="btnSimpan" name="simpan" type="submit" value="Simpan" class="btn hover focus">
         </form>
         <br>
         <div>
